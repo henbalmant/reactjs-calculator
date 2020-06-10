@@ -1,8 +1,8 @@
 # ReactJS Calculator
 
-<h3 align="center"><a href="#">LIVE DEMO</a></h3>
+<h3 align="center"><a href="https://reactjs-calculator-v1.herokuapp.com/">LIVE DEMO</a></h3>
 
-<p align="center"><img src="https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true"></p>
+<p align="center"><img src="https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true" href="https://reactjs-calculator-v1.herokuapp.com/"></p>
 
 ## User Stories
 
