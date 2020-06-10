@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import CalculatorDisplay from './CalculatorDisplay';
+import CalculatorKey from './CalculatorKey'
 
 const CalculatorOperations = {
   '/': (prevValue, nextValue) => prevValue / nextValue,
@@ -33,6 +34,23 @@ class Calculator extends React.Component {
     })
   }
 
+  clearLastChar() {
+    const { displayValue } = this.state
+
+    this.setState({
+      displayValue: displayValue.substring(0, displayValue.length - 1) || '0'
+    })
+  }
+
+  toggleSign() {
+    const { displayValue } = this.state
+    const newValue = parseFloat(displayValue) * -1
+
+    this.setState({
+      displayValue: String(newValue)
+    })
+  }
+
   inputDigit(digit) {
     const { displayValue, waitingForOperand } = this.state;
 
@@ -49,14 +67,9 @@ class Calculator extends React.Component {
   }
 
   inputDot() {
-    const { displayValue, waitingForOperand } = this.state;
+    const { displayValue } = this.state
 
-    if (waitingForOperand) {
-      this.setState({
-        displayValue: '.',
-        waitingForOperand: false
-      })
-    } else if (displayValue.indexOf('.') === -1) {
+    if (!(/\./).test(displayValue)) {
       this.setState({
         displayValue: displayValue + '.',
         waitingForOperand: false
@@ -64,20 +77,18 @@ class Calculator extends React.Component {
     }
   }
 
-  toggleSign() {
-    const { displayValue } = this.state;
-
-    this.setState({
-      displayValue: displayValue.charAt(0) === '-' ? displayValue.substr(1) : '-' + displayValue
-    })
-  }
-
   inputPercent() {
-    const { displayValue } = this.state;
-    const value = parseFloat(displayValue)
+    const { displayValue } = this.state
+    const currentValue = parseFloat(displayValue)
+
+    if (currentValue === 0)
+      return
+
+    const fixedDigits = displayValue.replace(/^-?\d*\.?/, '')
+    const newValue = parseFloat(displayValue) / 100
 
     this.setState({
-      displayValue: String(value / 100)
+      displayValue: String(newValue.toFixed(fixedDigits.length + 2))
     })
   }
 
@@ -105,6 +116,46 @@ class Calculator extends React.Component {
     })
   }
 
+  handleKeyDown = (event) => {
+    let { key } = event
+
+    if (key === 'Enter')
+      key = '='
+
+    if ((/\d/).test(key)) {
+      event.preventDefault()
+      this.inputDigit(parseInt(key, 10))
+    } else if (key in CalculatorOperations) {
+      event.preventDefault()
+      this.performOperation(key)
+    } else if (key === '.') {
+      event.preventDefault()
+      this.inputDot()
+    } else if (key === '%') {
+      event.preventDefault()
+      this.inputPercent()
+    } else if (key === 'Backspace') {
+      event.preventDefault()
+      this.clearLastChar()
+    } else if (key === 'Clear') {
+      event.preventDefault()
+
+      if (this.state.displayValue !== '0') {
+        this.clearDisplay()
+      } else {
+        this.clearAll()
+      }
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown)
+  }
+
   render() {
     const { displayValue } = this.state;
 
@@ -118,32 +169,30 @@ class Calculator extends React.Component {
           <div className="input-keys">
 
             <div className="function-keys">
-              <button className="calculator-key key-clear" onClick={() => clearDisplay ? this.clearDisplay() : this.clearAll()}>{clearText}</button>
-              <button className="calculator-key key-sign" onClick={() => this.toggleSign()}>±</button>
-              <button className="calculator-key key-percent" onClick={() => this.inputPercent()}>%</button>
+            <CalculatorKey className="key-clear" onPress={() => clearDisplay ? this.clearDisplay() : this.clearAll()}>{clearText}</CalculatorKey>
+              <CalculatorKey className="key-sign" onPress={() => this.toggleSign()}>±</CalculatorKey>
+              <CalculatorKey className="key-percent" onPress={() => this.inputPercent()}>%</CalculatorKey>
             </div>
-
             <div className="digit-keys">
-              <button className="calculator-key key-0" onClick={() => this.inputDigit(0)}>0</button>
-              <button className="calculator-key key-dot" onClick={() => this.inputDot()}>•</button>
-              <button className="calculator-key key-1" onClick={() => this.inputDigit(1)}>1</button>
-              <button className="calculator-key key-2" onClick={() => this.inputDigit(2)}>2</button>
-              <button className="calculator-key key-3" onClick={() => this.inputDigit(3)}>3</button>
-              <button className="calculator-key key-4" onClick={() => this.inputDigit(4)}>4</button>
-              <button className="calculator-key key-5" onClick={() => this.inputDigit(5)}>5</button>
-              <button className="calculator-key key-6" onClick={() => this.inputDigit(6)}>6</button>
-              <button className="calculator-key key-7" onClick={() => this.inputDigit(7)}>7</button>
-              <button className="calculator-key key-8" onClick={() => this.inputDigit(8)}>8</button>
-              <button className="calculator-key key-9" onClick={() => this.inputDigit(9)}>9</button>
+              <CalculatorKey className="key-0" onPress={() => this.inputDigit(0)}>0</CalculatorKey>
+              <CalculatorKey className="key-dot" onPress={() => this.inputDot()}>●</CalculatorKey>
+              <CalculatorKey className="key-1" onPress={() => this.inputDigit(1)}>1</CalculatorKey>
+              <CalculatorKey className="key-2" onPress={() => this.inputDigit(2)}>2</CalculatorKey>
+              <CalculatorKey className="key-3" onPress={() => this.inputDigit(3)}>3</CalculatorKey>
+              <CalculatorKey className="key-4" onPress={() => this.inputDigit(4)}>4</CalculatorKey>
+              <CalculatorKey className="key-5" onPress={() => this.inputDigit(5)}>5</CalculatorKey>
+              <CalculatorKey className="key-6" onPress={() => this.inputDigit(6)}>6</CalculatorKey>
+              <CalculatorKey className="key-7" onPress={() => this.inputDigit(7)}>7</CalculatorKey>
+              <CalculatorKey className="key-8" onPress={() => this.inputDigit(8)}>8</CalculatorKey>
+              <CalculatorKey className="key-9" onPress={() => this.inputDigit(9)}>9</CalculatorKey>
             </div>
           </div>
-
           <div className="operator-keys">
-            <button className="calculator-key key-divide" onClick={() => this.performOperation('/')}>÷</button>
-            <button className="calculator-key key-multiply" onClick={() => this.performOperation('*')}>x</button>
-            <button className="calculator-key key-subtract" onClick={() => this.performOperation('-')}>-</button>
-            <button className="calculator-key key-add" onClick={() => this.performOperation('+')}>+</button>
-            <button className="calculator-key key-equals" onClick={() => this.performOperation('=')}>=</button>
+            <CalculatorKey className="key-divide" onPress={() => this.performOperation('/')}>÷</CalculatorKey>
+            <CalculatorKey className="key-multiply" onPress={() => this.performOperation('*')}>×</CalculatorKey>
+            <CalculatorKey className="key-subtract" onPress={() => this.performOperation('-')}>−</CalculatorKey>
+            <CalculatorKey className="key-add" onPress={() => this.performOperation('+')}>+</CalculatorKey>
+            <CalculatorKey className="key-equals" onPress={() => this.performOperation('=')}>=</CalculatorKey>
           </div>
         </div>
       </div>
