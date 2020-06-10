@@ -18,6 +18,21 @@ class Calculator extends React.Component {
     operator: null,
   }
 
+  clearAll() {
+    this.setState({
+      value: null,
+      displayValue: '0',
+      waitingForOperand: false,
+      operator: null,
+    })
+  }
+
+  clearDisplay(){
+    this.setState({
+      displayValue: '0'
+    })
+  }
+
   inputDigit(digit) {
     const { displayValue, waitingForOperand } = this.state;
 
@@ -47,13 +62,6 @@ class Calculator extends React.Component {
         waitingForOperand: false
       })
     }
-  }
-
-  clearDisplay() {
-    this.setState({
-      value: null,
-      displayValue: '0',
-    })
   }
 
   toggleSign() {
@@ -100,6 +108,9 @@ class Calculator extends React.Component {
   render() {
     const { displayValue } = this.state;
 
+    const clearDisplay = displayValue !== '0'
+    const clearText = clearDisplay ? 'C' : 'AC'
+
     return(
       <div className="calculator">
         <CalculatorDisplay value={displayValue}/>
@@ -107,7 +118,7 @@ class Calculator extends React.Component {
           <div className="input-keys">
 
             <div className="function-keys">
-              <button className="calculator-key key-clear" onClick={() => this.clearDisplay()}>AC</button>
+              <button className="calculator-key key-clear" onClick={() => clearDisplay ? this.clearDisplay() : this.clearAll()}>{clearText}</button>
               <button className="calculator-key key-sign" onClick={() => this.toggleSign()}>±</button>
               <button className="calculator-key key-percent" onClick={() => this.inputPercent()}>%</button>
             </div>
