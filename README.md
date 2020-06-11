@@ -1,6 +1,6 @@
 # ReactJS Calculator
 
-<h3 align="center"><a href="https://reactjs-calculator-v1.herokuapp.com/">LIVE DEMO</a></h3>
+[LIVE DEMO](https://reactjs-calculator-v1.herokuapp.com/)
 
 [![Foo](https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true")](https://reactjs-calculator-v1.herokuapp.com/)
 
