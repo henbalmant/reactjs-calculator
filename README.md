@@ -2,7 +2,7 @@
 
 <h3 align="center"><a href="https://reactjs-calculator-v1.herokuapp.com/">LIVE DEMO</a></h3>
 
-<p align="center"><img src="https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true" href="https://reactjs-calculator-v1.herokuapp.com/"></p>
+[![Foo](https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true")](https://reactjs-calculator-v1.herokuapp.com/)
 
 ## User Stories
 
