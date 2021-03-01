@@ -1,8 +1,8 @@
 # ReactJS Calculator
 
-[LIVE DEMO](https://reactjs-calculator-v1.herokuapp.com/)
+[LIVE DEMO](https://reactjs-calculator.vercel.app/)
 
-[![](https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true")](https://reactjs-calculator-v1.herokuapp.com/)
+[![](https://github.com/henbalmant/react-calculator/blob/master/screenshot.png?raw=true")](https://reactjs-calculator.vercel.app/)
 
 ## User Stories
 
